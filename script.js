@@ -1,5 +1,5 @@
 /**
- * EXPERIMENTO INTERATIVO: A INTERFACE VIVA (18 PUZZLES SEQUENCIAIS COMPLETOS)
+ * EXPERIMENTO INTERATIVO: A INTERFACE VIVA (19 PUZZLES SEQUENCIAIS COMPLETOS)
  */
 
 // --- MOTOR DE ÁUDIO SINTETIZADO ---
@@ -26,7 +26,7 @@ const AudioEngine = {
     }
 };
 
-// --- BASE DE DADOS NARRATIVA (18 DESAFIOS) ---
+// --- BASE DE DADOS NARRATIVA (19 DESAFIOS) ---
 const NARRATIVA = {
     puzzles: [
         { id: 1, sub: "Camada 1: Dinâmica de Impulso" },
@@ -46,7 +46,8 @@ const NARRATIVA = {
         { id: 15, sub: "Camada 5: Fragmentação Sequencial" },     
         { id: 16, sub: "Camada 5: Sincronia de Clima Local" },     
         { id: 17, sub: "Camada 5: Falso Travamento Estrutural" }, 
-        { id: 18, sub: "Camada 5: O Espectro Oculto" }            
+        { id: 18, sub: "Camada 5: O Enigma da Janela Encolhida" },
+        { id: 19, sub: "Camada Final: O Paradoxo do Eco" }            
     ]
 };
 
@@ -159,15 +160,15 @@ function renderizarPuzzle() {
     containerApp.className = ''; 
     document.body.style.cursor = 'default';
     
-    if (estado.puzzleAtual > 18) {
+    if (estado.puzzleAtual > 19) {
         renderizarGaleriaFinal();
         return;
     }
 
     const infoConfig = NARRATIVA.puzzles[estado.puzzleAtual - 1];
-    subtxtEntidade.textContent = `${infoConfig.sub} | Fragmento ${infoConfig.id}/18`;
+    subtxtEntidade.textContent = `${infoConfig.sub} | Fragmento ${infoConfig.id}/19`;
     
-    const pct = Math.floor(((estado.puzzleAtual - 1) / 18) * 100);
+    const pct = Math.floor(((estado.puzzleAtual - 1) / 19) * 100);
     atualizarStatus(pct, `Decodificando barreira de dados ${estado.puzzleAtual}...`);
 
     window[`setupPuzzle${estado.puzzleAtual}`]();
@@ -177,7 +178,18 @@ function renderizarPuzzle() {
 /* PUZZLES 1 A 6 */
 // ==========================================================================
 window.setupPuzzle1 = function() {
+    // Gerar uma chave de histórico única para a sessão e salvar no sessionStorage
+    if(!sessionStorage.getItem('chave_passado')) {
+        const sufixoAleatorio = Math.floor(100 + Math.random() * 900);
+        sessionStorage.setItem('chave_passado', `SESSION-X${sufixoAleatorio}`);
+    }
+    const chaveOculta = sessionStorage.getItem('chave_passado');
+
     digitar(txtEntidade, "A pressa constrói paredes que se movem sozinhos. Somente uma aproximação cirúrgica e desacelerada pode tocar no que foge.");
+    
+    // Injeta sutilmente a pista no rodapé informativo da tela
+    subtxtEntidade.textContent += ` | ID: ${chaveOculta}`;
+
     const btn = document.createElement('button');
     btn.className = 'btn-target btn-fuga'; btn.textContent = 'Avançar';
     btn.style.left = '40%'; btn.style.top = '40%';
@@ -264,7 +276,7 @@ window.setupPuzzle4 = function() {
 };
 
 window.setupPuzzle5 = function() {
-    digitar(txtEntidade, "Olhar fixamente para o mesmo lugar fecha seus horizons. Dê atenção ao mundo lá fora por um segundo e retorne para mim.");
+    digitar(txtEntidade, "Olhar fixamente para o mesmo lugar fecha seus horizons. Dê atenção ao mundo lá fora por um segundo e retorne para mij.");
     const aoMudarAba = () => {
         if (!document.hidden) {
             document.removeEventListener('visibilitychange', aoMudarAba);
@@ -280,7 +292,7 @@ window.setupPuzzle6 = function() {
     digitar(txtEntidade, "A verdade está escrita no ponto mais alto desta janela, onde os nomes se guardam de forma discreta.");
     const input = document.createElement('input'); input.className = 'input-custom'; input.placeholder = 'O que está escrito no topo?';
     input.addEventListener('change', () => {
-        if (input.value === 'JanelaAberta') { document.title = "Núcleo Protegido"; proximoPuzzle(); }
+        if (input.value === 'JanelaAberta') { document.title = "Acesso Forçado"; proximoPuzzle(); }
         else { registrarErro(1); input.value = ''; }
     });
     zonaInteracao.appendChild(input);
@@ -428,177 +440,103 @@ window.setupPuzzle14 = function() {
 };
 
 // ==========================================================================
-/* PUZZLE 15 — FRAGMENTAÇÃO SEQUENCIAL (O CAPTCHA EM ESCADA) */
+/* PUZZLES 15 A 18 (RETA FINAL ORIGINAL) */
 // ==========================================================================
 window.setupPuzzle15 = function() {
     digitar(txtEntidade, "A sequência mutante se transforma a cada toque. Siga a ordem matemática das posições: comece caçando a primeira letra, depois encontre a segunda do próximo código, e caminhe de degrau em degrau.");
-    
-    let acertos = 0;
-    let stringAtual = "";
-    const ordensTexto = ["1º caractere", "2º caractere", "3º caractere", "4º caractere", "5º caractere"];
-
-    const contadorVisual = document.createElement('div');
-    contadorVisual.className = 'captcha-counter';
-    contadorVisual.textContent = `Extração Ativa: Procure o ${ordensTexto[acertos]} (${acertos}/5)`;
-
-    const captchaBox = document.createElement('div');
-    captchaBox.className = 'captcha-container';
-    
-    const input = document.createElement('input');
-    input.className = 'input-custom';
-    input.placeholder = 'Acompanhe a escada de caracteres...';
-
+    let acertos = 0; let stringAtual = ""; const ordensTexto = ["1º caractere", "2º caractere", "3º caractere", "4º caractere", "5º caractere"];
+    const contadorVisual = document.createElement('div'); contadorVisual.className = 'captcha-counter'; contadorVisual.textContent = `Extração Ativa: Procure o ${ordensTexto[acertos]} (${acertos}/5)`;
+    const captchaBox = document.createElement('div'); captchaBox.className = 'captcha-container';
+    const input = document.createElement('input'); input.className = 'input-custom'; input.placeholder = 'Acompanhe a escada de caracteres...';
     const gerarNovoCodigo = () => {
-        const caracters = "ABCDEFGHJKLMNOPQRSTUVWXYZ23456789";
-        let res = "";
-        for(let i = 0; i < 5; i++) { res += caracters.charAt(Math.floor(Math.random() * caracters.length)); }
-        return res;
+        const caracters = "ABCDEFGHJKLMNOPQRSTUVWXYZ23456789"; let res = "";
+        for(let i = 0; i < 5; i++) { res += caracters.charAt(Math.floor(Math.random() * caracters.length)); } return res;
     };
-
-    stringAtual = gerarNovoCodigo();
-    captchaBox.textContent = stringAtual;
-
+    stringAtual = gerarNovoCodigo(); captchaBox.textContent = stringAtual;
     input.addEventListener('keydown', (e) => {
-        if (e.key.length !== 1) return;
-        e.preventDefault(); 
-        
-        const teclaPressionada = e.key.toUpperCase();
-        const letraCorretaAlvo = stringAtual.charAt(acertos).toUpperCase();
-
+        if (e.key.length !== 1) return; e.preventDefault(); 
+        const teclaPressionada = e.key.toUpperCase(); const letraCorretaAlvo = stringAtual.charAt(acertos).toUpperCase();
         if (teclaPressionada === letraCorretaAlvo) {
-            acertos++;
-            AudioEngine.play(440 + (acertos * 60), 0.1, 'sine', 0.04);
-            input.value += teclaPressionada; 
-            
-            if (acertos >= 5) {
-                setTimeout(() => { proximoPuzzle(); }, 300);
-            } else {
-                contadorVisual.textContent = `Extração Ativa: Procure o ${ordensTexto[acertos]} (${acertos}/5)`;
-                stringAtual = gerarNovoCodigo();
-                captchaBox.textContent = stringAtual;
-            }
-        } else {
-            registrarErro(1); 
-        }
+            acertos++; AudioEngine.play(440 + (acertos * 60), 0.1, 'sine', 0.04); input.value += teclaPressionada; 
+            if (acertos >= 5) { setTimeout(() => { proximoPuzzle(); }, 300); } 
+            else { contadorVisual.textContent = `Extração Ativa: Procure o ${ordensTexto[acertos]} (${acertos}/5)`; stringAtual = gerarNovoCodigo(); captchaBox.textContent = stringAtual; }
+        } else { registrarErro(1); }
     });
-
-    zonaInteracao.appendChild(contadorVisual);
-    zonaInteracao.appendChild(captchaBox);
-    zonaInteracao.appendChild(input);
-    input.focus();
+    zonaInteracao.appendChild(contadorVisual); zonaInteracao.appendChild(captchaBox); zonaInteracao.appendChild(input); input.focus();
 };
 
-// ==========================================================================
-/* PUZZLE 16 — SINCRONIA DE CLIMA LOCAL (XIQUES-XIQUE) */
-// ==========================================================================
 window.setupPuzzle16 = function() {
     digitar(txtEntidade, "O último lacre está conectado ao mundo real. Descubra a exata temperatura ambiente em graus que os termômetros marcam agora na icônica cidade de Xique-Xique, na Bahia.");
+    const input = document.createElement('input'); input.className = 'input-custom'; input.placeholder = 'Insira a temperatura real externa (Ex: 28)';
+    let temperaturaCorreta = null;
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=-10.8231&longitude=-42.7261&current_weather=true")
+        .then(response => response.json()).then(data => { if(data && data.current_weather) temperaturaCorreta = Math.round(data.current_weather.temperature); })
+        .catch(() => { temperaturaCorreta = 29; });
+    input.addEventListener('change', () => {
+        const palpite = parseInt(input.value.trim(), 10);
+        if (temperaturaCorreta !== null && palpite === temperaturaCorreta) { input.blur(); AudioEngine.play(800, 0.3, 'sine', 0.04); proximoPuzzle(); } 
+        else { registrarErro(1); input.value = ''; }
+    });
+    zonaInteracao.appendChild(input); input.focus();
+};
+
+window.setupPuzzle17 = function() {
+    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistence. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você apague o erro cometido.");
+    const carregando = document.createElement('div'); carregando.style.fontSize = '1.3rem'; carregando.style.fontWeight = 'bold'; carregando.style.letterSpacing = '1px'; carregando.style.color = 'var(--accent-color)'; carregando.textContent = "CARREGAMENTO CONGELADO: 99%";
+    const inputFalso = document.createElement('input'); inputFalso.className = 'input-custom'; inputFalso.placeholder = 'Aguarde a liberação do buffer...'; inputFalso.disabled = true; 
+    let bufferLiberado = false;
+    setTimeout(() => {
+        bufferLiberado = true; inputFalso.disabled = false; inputFalso.placeholder = 'NÚCLEO RETIDO. CORRIJA O TRAVAMENTO AGORA...'; inputFalso.focus(); AudioEngine.play(350, 0.2, 'triangle', 0.03);
+    }, 15000);
+    inputFalso.addEventListener('keydown', (e) => {
+        if (!bufferLiberado) { e.preventDefault(); return; }
+        e.preventDefault();
+        if (e.key === 'Backspace' || e.key === 'Delete') { AudioEngine.play(600, 0.2, 'sine', 0.04); proximoPuzzle(); } 
+        else { registrarErro(1); }
+    });
+    zonaInteracao.appendChild(carregando); zonaInteracao.appendChild(inputFalso);
+};
+
+window.setupPuzzle18 = function() {
+    digitar(txtEntidade, "O espaço se tornou pequeno demais para a minha presença. Se quiser enxergar além das bordas que eu mesmo criei, você terá que expandir os limites desta interface e me puxar de volta.");
+    zonaInteracao.style.overflowX = 'scroll'; zonaInteracao.style.overflowY = 'hidden'; zonaInteracao.style.whiteSpace = 'nowrap';
+    const containerLargo = document.createElement('div'); containerLargo.style.width = '180%'; containerLargo.style.display = 'flex'; containerLargo.style.justifyContent = 'flex-end'; containerLargo.style.paddingRight = '60px'; containerLargo.style.height = '100%'; containerLargo.style.alignItems = 'center';
+    const btnOculto = document.createElement('button'); btnOculto.className = 'btn-target'; btnOculto.textContent = 'FINALIZAR SISTEMA';
+    btnOculto.addEventListener('click', () => {
+        zonaInteracao.style.overflowX = 'hidden'; zonaInteracao.style.whiteSpace = 'normal';
+        AudioEngine.play(650, 0.15, 'sine', 0.04);
+        proximoPuzzle(); // Avança para o puzzle surpresa!
+    });
+    containerLargo.appendChild(btnOculto); zonaInteracao.appendChild(containerLargo);
+};
+
+// ==========================================================================
+/* PUZZLE 19 — O PARADOXO DO ECO (HISTÓRICO DA SESSÃO) */
+// ==========================================================================
+window.setupPuzzle19 = function() {
+    // Busca o token gerado lá na fase 1
+    const chaveCorreta = sessionStorage.getItem('chave_passado') || "SESSION-X47";
+
+    digitar(txtEntidade, "Você buscou as chaves no futuro, mas o seu próprio passado já as testemunhou. O código de liberação estrutural foi entregue a você no exato instante em que cruzou a primeira porta deste sistema. O que estava escrito lá?");
     
     const input = document.createElement('input');
     input.className = 'input-custom';
-    input.placeholder = 'Insira a temperatura real externa (Ex: 28)';
+    input.placeholder = 'Digite a chave do seu passado...';
     
-    let temperaturaCorreta = null;
-
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=-10.8231&longitude=-42.7261&current_weather=true")
-        .then(response => response.json())
-        .then(data => { if(data && data.current_weather) temperaturaCorreta = Math.round(data.current_weather.temperature); })
-        .catch(() => { temperaturaCorreta = 29; });
-
     input.addEventListener('change', () => {
-        const palpite = parseInt(input.value.trim(), 10);
-        if (temperaturaCorreta !== null && palpite === temperaturaCorreta) {
-            input.blur();
-            AudioEngine.play(800, 0.3, 'sine', 0.04);
-            proximoPuzzle(); 
+        const respostaUsuario = input.value.trim().toUpperCase();
+        
+        if (respostaUsuario === chaveCorreta.toUpperCase()) {
+            AudioEngine.play(900, 0.4, 'sine', 0.05);
+            proximoPuzzle(); // Vai para a galeria final (vitória)
         } else {
+            // Se errar aqui na última fase, o jogo reseta por completo!
             registrarErro(1);
-            input.value = '';
         }
     });
-
+    
     zonaInteracao.appendChild(input);
     input.focus();
-};
-
-
-    // ==========================================================================
-/* PUZZLE 17 — O FALSO TRAVAMENTO ESTRUTURAL */
-// ==========================================================================
-window.setupPuzzle17 = function() {
-    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistence. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você apague o erro cometido.");
-    
-    const carregando = document.createElement('div');
-    carregando.style.fontSize = '1.3rem'; carregando.style.fontWeight = 'bold';
-    carregando.style.letterSpacing = '1px'; carregando.style.color = 'var(--accent-color)';
-    carregando.textContent = "CARREGAMENTO CONGELADO: 99%";
-    
-    const inputFalso = document.createElement('input');
-    inputFalso.className = 'input-custom'; inputFalso.placeholder = 'Aguarde a liberação do buffer...';
-    inputFalso.disabled = true; 
-    
-    let bufferLiberado = false;
-    
-    setTimeout(() => {
-        bufferLiberado = true;
-        inputFalso.disabled = false;
-        inputFalso.placeholder = 'NÚCLEO RETIDO. CORRIJA O TRAVAMENTO AGORA...';
-        inputFalso.focus();
-        AudioEngine.play(350, 0.2, 'triangle', 0.03);
-    }, 15000); // 15 segundos simulando o travamento
-    
-    inputFalso.addEventListener('keydown', (e) => {
-        if (!bufferLiberado) {
-            e.preventDefault();
-            return;
-        }
-        
-        e.preventDefault();
-        if (e.key === 'Backspace' || e.key === 'Delete') {
-            AudioEngine.play(600, 0.2, 'sine', 0.04);
-            proximoPuzzle();
-        } else {
-            registrarErro(1);
-        }
-    });
-    
-    zonaInteracao.appendChild(carregando);
-    zonaInteracao.appendChild(inputFalso);
-};
-
-// ==========================================================================
-/* PUZZLE 18 — O ENIGMA DA JANELA ENCOLHIDA (ARRASTAR PRO LADO) */
-// ==========================================================================
-window.setupPuzzle18 = function() {
-    digitar(txtEntidade, "O espaço se tornou pequeno demais para a minha presença. Se quiser enxergar além das bordas que eu mesmo criei, você terá que expandir os limites desta interface e me puxar de volta.");
-    
-    // Altera o estilo da zona de interação para criar o transbordo (scroll horizontal)
-    zonaInteracao.style.overflowX = 'scroll';
-    zonaInteracao.style.overflowY = 'hidden';
-    zonaInteracao.style.whiteSpace = 'nowrap';
-    
-    const containerLargo = document.createElement('div');
-    containerLargo.style.width = '180%'; // Empurra o conteúdo para fora da tela
-    containerLargo.style.display = 'flex';
-    containerLargo.style.justifyContent = 'flex-end'; // Joga o botão lá para a extrema direita
-    containerLargo.style.paddingRight = '50px';
-    containerLargo.style.height = '100%';
-    containerLargo.style.alignItems = 'center';
-    
-    const btnOculto = document.createElement('button');
-    btnOculto.className = 'btn-target';
-    btnOculto.textContent = 'FINALIZAR SISTEMA';
-    
-    btnOculto.addEventListener('click', () => {
-        // Restaura a zona de interação ao padrão antes de avançar
-        zonaInteracao.style.overflowX = 'hidden';
-        zonaInteracao.style.whiteSpace = 'normal';
-        AudioEngine.play(650, 0.15, 'sine', 0.04);
-        proximoPuzzle();
-    });
-    
-    containerLargo.appendChild(btnOculto);
-    zonaInteracao.appendChild(containerLargo);
 };
 
 // ==========================================================================
