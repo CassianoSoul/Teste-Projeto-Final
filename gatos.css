@@ -1,0 +1,89 @@
+/* ==========================================================================
+   ESTETICA "CUTE & CLEAN" - GALERIA DE GATOS
+   ========================================================================== */
+:root {
+    --bg-bright: #ffffff;
+    --text-dark: #333333;
+    --card-bg: #f9f9f9;
+    --font-standard: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-bright);
+    color: var(--text-dark);
+    font-family: var(--font-standard);
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Transicao suave vindo do flash branco */
+    animation: fade-in-soft 2s ease-out;
+}
+
+@keyframes fade-in-soft {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Container da Galeria */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Fotos de Gatos */
+.cat-photo {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #eee;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.cat-photo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Botao de voltar escondido la embaixo, bem simples */
+.nav-footer {
+    margin-top: 60px;
+    padding: 20px;
+}
+
+.btn-restart {
+    background: none;
+    border: 1px solid #ddd;
+    color: #999;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.btn-restart:hover {
+    background: #f5f5f5;
+    color: #666;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}

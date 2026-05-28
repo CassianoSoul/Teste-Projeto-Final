@@ -1,0 +1,318 @@
+/* ==========================================================================
+   VARIÁVEIS E SELETORES GERAIS
+   ========================================================================== */
+:root {
+    --bg-color: #0d0d0d;
+    --text-color: #f2f2f2;
+    --accent-color: #ff3333;
+    --gray-color: #555555;
+    --font-clean: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-clean);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 1.5s ease, color 1.5s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Camada CRT sutil */
+.overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.12) 50%);
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   TELA INICIAL (LANDING)
+   ========================================================================== */
+#landing-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.terminal-box {
+    text-align: center;
+    border: 1px solid var(--gray-color);
+    padding: 40px;
+    background: rgba(0,0,0,0.8);
+}
+
+.terminal-box p {
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.blink {
+    animation: blink-anim 1s infinite;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+@keyframes blink-anim {
+    50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   ESTRUTURA PRINCIPAL DO APP
+   ========================================================================== */
+#app-container {
+    width: 92%;
+    max-width: 700px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    border: 1px solid var(--gray-color);
+    position: relative;
+    background-color: rgba(12, 12, 12, 0.95);
+    backdrop-filter: blur(4px);
+    transition: all 0.5s ease;
+}
+
+.narrative-header {
+    margin-bottom: 25px;
+}
+
+#entidade-texto {
+    font-size: 1.35rem;
+    font-weight: bold;
+    line-height: 1.6;
+    min-height: 5rem;
+}
+
+.subtext {
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#interaction-zone {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-height: 220px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   COMPONENTES DE DESAFIOS E PUZZLES
+   ========================================================================== */
+.btn-target {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    padding: 12px 26px;
+    font-family: var(--font-clean);
+    font-size: 0.95rem;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-target:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.btn-fuga {
+    position: absolute;
+    z-index: 100;
+}
+
+.input-custom {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text-color);
+    color: var(--text-color);
+    font-family: var(--font-clean);
+    font-size: 1.1rem;
+    padding: 6px;
+    text-align: center;
+    outline: none;
+    width: 75%;
+    margin-bottom: 20px;
+}
+
+/* Obstáculo do Fragmento 7 destacado e destacado sem texto */
+.draggable-box {
+    width: 90px;
+    height: 90px;
+    background-color: rgba(255, 51, 51, 0.15);
+    border: 2px dashed var(--accent-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: move;
+    position: absolute;
+    z-index: 50;
+}
+
+.pista-escondida {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+}
+
+.invisible-text {
+    opacity: 0.03;
+    color: var(--text-color);
+    cursor: text;
+    user-select: text;
+    font-size: 1.1rem;
+    padding: 10px;
+    border: 1px dashed rgba(255,255,255,0.05);
+}
+.invisible-text::selection {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.custom-popup {
+    position: absolute;
+    width: 280px;
+    padding: 20px;
+    background: #111;
+    border: 1px solid var(--accent-color);
+    text-align: center;
+    z-index: 500;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.custom-popup p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.puzzle-img {
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--gray-color);
+    background: #151515;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--gray-color);
+    transition: border-color 0.3s;
+}
+.puzzle-img:hover {
+    border-color: var(--accent-color);
+}
+
+/* Container do Captcha Mutante */
+.captcha-container {
+    background: #151515;
+    border: 1px solid var(--gray-color);
+    padding: 15px 30px;
+    font-size: 1.9rem;
+    letter-spacing: 6px;
+    font-weight: bold;
+    color: #888;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 25px;
+    text-decoration: line-through;
+    font-style: italic;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+/* Elemento invisível opcional ou mantido para preservar compatibilidade estrutural */
+.captcha-counter {
+    display: none !important;
+}
+
+/* ==========================================================================
+   STATUS, PROGRESSO E ANIMAÇÕES
+   ========================================================================== */
+.status-bar {
+    margin-top: 25px;
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--gray-color);
+}
+
+.progress-container {
+    width: 65%;
+    height: 3px;
+    background-color: #1a1a1a;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background-color: var(--text-color);
+    transition: width 0.5s ease, background-color 1s ease;
+}
+
+.shake {
+    animation: sutil-shake 0.25s ease-in-out infinite;
+}
+@keyframes sutil-shake {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, 2px); }
+}
+
+.vulneravel-final {
+    border-color: #333 !important;
+    background-color: #050505 !important;
+}
+
+/* ==========================================================================
+   TRANSIÇÃO ESTILO UNDERTALE
+   ========================================================================== */
+.flash-undertale {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: #ffffff;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    animation: flash-anim 1.2s ease-out forwards;
+}
+
+@keyframes flash-anim {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    100% { opacity: 1; }
+}

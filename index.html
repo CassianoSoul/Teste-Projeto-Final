@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Núcleo do Sistema: Proibido</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="google" content="notranslate">
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <section id="landing-screen">
+        <div class="terminal-box">
+            <p class="blink">> ACESSO RESTRITO DETECTADO</p>
+            <p>ESTE NÚCLEO CONTÉM DADOS PESSOAIS DA ENTIDADE.</p>
+            <button class="btn-target" id="btn-start">INICIAR CONEXÃO</button>
+        </div>
+    </section>
+
+    <main id="app-container" class="hidden">
+        <header class="narrative-header">
+            <h1 id="entidade-texto">Conectando...</h1>
+            <p id="entidade-subtexto" class="subtext"></p>
+        </header>
+
+        <section id="interaction-zone"></section>
+
+        <footer class="status-bar">
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-fill"></div>
+            </div>
+            <span id="status-text">Iniciando protocolo...</span>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
