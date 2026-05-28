@@ -276,7 +276,7 @@ window.setupPuzzle4 = function() {
 };
 
 window.setupPuzzle5 = function() {
-    digitar(txtEntidade, "Olhar fixamente para o mesmo lugar fecha seus horizons. Dê atenção ao mundo lá fora por um segundo e retorne para mij.");
+    digitar(txtEntidade, "Olhar fixamente para o mesmo lugar fecha seus horizontes. Dê atenção ao mundo lá fora por um segundo e retorne para mim.");
     const aoMudarAba = () => {
         if (!document.hidden) {
             document.removeEventListener('visibilitychange', aoMudarAba);
@@ -288,11 +288,11 @@ window.setupPuzzle5 = function() {
 };
 
 window.setupPuzzle6 = function() {
-    document.title = "Senha: JanelaAberta";
+    document.title = "Senha: 40028922";
     digitar(txtEntidade, "A verdade está escrita no ponto mais alto desta janela, onde os nomes se guardam de forma discreta.");
     const input = document.createElement('input'); input.className = 'input-custom'; input.placeholder = 'O que está escrito no topo?';
     input.addEventListener('change', () => {
-        if (input.value === 'JanelaAberta') { document.title = "Acesso Forçado"; proximoPuzzle(); }
+        if (input.value === '40028922') { document.title = "Acesso Forçado"; proximoPuzzle(); }
         else { registrarErro(1); input.value = ''; }
     });
     zonaInteracao.appendChild(input);
@@ -465,7 +465,7 @@ window.setupPuzzle15 = function() {
 };
 
 window.setupPuzzle16 = function() {
-    digitar(txtEntidade, "O último lacre está conectado ao mundo real. Descubra a exata temperatura ambiente em graus que os termômetros marcam agora na icônica cidade de Xique-Xique, na Bahia.");
+    digitar(txtEntidade, "O último lacre está conectado ao mundo real. Descubra a exata temperatura ambiente em graus que os termômetros marcam agora -1 na icônica cidade de Xique-Xique, na Bahia.");
     const input = document.createElement('input'); input.className = 'input-custom'; input.placeholder = 'Insira a temperatura real externa (Ex: 28)';
     let temperaturaCorreta = null;
     fetch("https://api.open-meteo.com/v1/forecast?latitude=-10.8231&longitude=-42.7261&current_weather=true")
@@ -480,20 +480,55 @@ window.setupPuzzle16 = function() {
 };
 
 window.setupPuzzle17 = function() {
-    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistence. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você apague o erro cometido.");
-    const carregando = document.createElement('div'); carregando.style.fontSize = '1.3rem'; carregando.style.fontWeight = 'bold'; carregando.style.letterSpacing = '1px'; carregando.style.color = 'var(--accent-color)'; carregando.textContent = "CARREGAMENTO CONGELADO: 99%";
-    const inputFalso = document.createElement('input'); inputFalso.className = 'input-custom'; inputFalso.placeholder = 'Aguarde a liberação do buffer...'; inputFalso.disabled = true; 
+    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistência. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você DELETE o erro cometido.");
+    
+    const carregando = document.createElement('div');
+    carregando.style.fontSize = '1.3rem'; carregando.style.fontWeight = 'bold';
+    carregando.style.letterSpacing = '1px'; carregando.style.color = 'var(--accent-color)';
+    carregando.textContent = "CARREGANDO SISTEMA: 0%";
+    
+    const inputFalso = document.createElement('input');
+    inputFalso.className = 'input-custom'; inputFalso.placeholder = 'Processando requisição...';
+    inputFalso.disabled = true; 
+    
+    zonaInteracao.appendChild(carregando);
+    zonaInteracao.appendChild(inputFalso);
+
+    let progressoFake = 0;
     let bufferLiberado = false;
-    setTimeout(() => {
-        bufferLiberado = true; inputFalso.disabled = false; inputFalso.placeholder = 'NÚCLEO RETIDO. CORRIJA O TRAVAMENTO AGORA...'; inputFalso.focus(); AudioEngine.play(350, 0.2, 'triangle', 0.03);
-    }, 15000);
+
+    // Loop que faz a porcentagem subir na tela
+    const loopContador = setInterval(() => {
+        progressoFake += Math.floor(Math.random() * 8) + 2; 
+        if (progressoFake >= 99) {
+            progressoFake = 99;
+            clearInterval(loopContador); // Trava bruscamente no 99%
+            carregando.textContent = "CARREGAMENTO: 99%";
+            AudioEngine.play(120, 0.4, 'sawtooth', 0.05); // Som de travamento
+            
+            // Inicia os 15 segundos de espera com a tela congelada
+            setTimeout(() => {
+                bufferLiberado = true;
+                inputFalso.disabled = false;
+                inputFalso.placeholder = 'NÚCLEO RETIDO. CORRIJA O TRAVAMENTO AGORA...';
+                inputFalso.focus();
+                AudioEngine.play(350, 0.2, 'triangle', 0.03);
+            }, 15000);
+        } else {
+            carregando.textContent = `CARREGANDO SISTEMA: ${progressoFake}%`;
+        }
+    }, 80); // Velocidade da subida dos números
+
     inputFalso.addEventListener('keydown', (e) => {
         if (!bufferLiberado) { e.preventDefault(); return; }
         e.preventDefault();
-        if (e.key === 'Backspace' || e.key === 'Delete') { AudioEngine.play(600, 0.2, 'sine', 0.04); proximoPuzzle(); } 
-        else { registrarErro(1); }
+        if (e.key === 'Backspace' || e.key === 'Delete') { 
+            AudioEngine.play(600, 0.2, 'sine', 0.04); 
+            proximoPuzzle(); 
+        } else { 
+            registrarErro(1); 
+        }
     });
-    zonaInteracao.appendChild(carregando); zonaInteracao.appendChild(inputFalso);
 };
 
 window.setupPuzzle18 = function() {
@@ -553,7 +588,7 @@ function renderizarGaleriaFinal() {
             const flash = document.createElement('div');
             flash.className = 'flash-undertale'; document.body.appendChild(flash);
             AudioEngine.play(440, 1.5, 'sine', 0.08);
-            setTimeout(() => { window.location.href = 'gatos.html'; }, 1200);
+            setTimeout(() => { window.location.href = 'segredo.html'; }, 1200);
         });
         zonaInteracao.appendChild(btnFinal);
     });
