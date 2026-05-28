@@ -312,8 +312,7 @@ window.setupPuzzle7 = function() {
 
     const drag = document.createElement('div'); 
     drag.className = 'draggable-box'; 
-    drag.textContent = 'OBSTÁCULO';
-    drag.style.backgroundColor = '#444444';
+    drag.style.backgroundColor = 'black'
     drag.style.color = '#ffffff';
     drag.style.zIndex = '100'; 
     drag.style.left = '44%'; 
@@ -361,7 +360,7 @@ window.setupPuzzle7 = function() {
 window.setupPuzzle8 = function() {
     digitar(txtEntidade, "Uma barreira artificial surgiu. Tentar destruí-la à força trará consequências que exigirão uma sincera retratação por escrito.");
     const popup = document.createElement('div'); popup.className = 'custom-popup'; popup.style.left = '30%'; popup.style.top = '20%';
-    const p = document.createElement('p'); p.textContent = "ALERTA: CRÍTICO";
+    const p = document.createElement('p'); p.textContent = "POR FAVOR, NÃO ME FECHE";
     const btnFechar = document.createElement('button'); btnFechar.className = 'btn-target'; btnFechar.textContent = 'FECHAR'; btnFechar.style.padding = '4px 10px';
     popup.appendChild(p); popup.appendChild(btnFechar); zonaInteracao.appendChild(popup);
     btnFechar.addEventListener('click', () => {
