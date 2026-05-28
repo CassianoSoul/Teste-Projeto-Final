@@ -521,11 +521,12 @@ window.setupPuzzle16 = function() {
     input.focus();
 };
 
-// ==========================================================================
+
+    // ==========================================================================
 /* PUZZLE 17 — O FALSO TRAVAMENTO ESTRUTURAL */
 // ==========================================================================
 window.setupPuzzle17 = function() {
-    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistência. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você apague o erro cometido.");
+    digitar(txtEntidade, "O sistema congelou sob o peso da sua insistence. Nenhuma interação comum reverterá essa estagnação estrutural... a não ser que você apague o erro cometido.");
     
     const carregando = document.createElement('div');
     carregando.style.fontSize = '1.3rem'; carregando.style.fontWeight = 'bold';
@@ -538,14 +539,13 @@ window.setupPuzzle17 = function() {
     
     let bufferLiberado = false;
     
-    // 15 segundos simula perfeitamente o travamento estático gerando a confusão
     setTimeout(() => {
         bufferLiberado = true;
         inputFalso.disabled = false;
         inputFalso.placeholder = 'NÚCLEO RETIDO. CORRIJA O TRAVAMENTO AGORA...';
         inputFalso.focus();
         AudioEngine.play(350, 0.2, 'triangle', 0.03);
-    }, 15000);
+    }, 15000); // 15 segundos simulando o travamento
     
     inputFalso.addEventListener('keydown', (e) => {
         if (!bufferLiberado) {
@@ -567,22 +567,38 @@ window.setupPuzzle17 = function() {
 };
 
 // ==========================================================================
-/* PUZZLE 18 — O ESPECTRO OCULTO (CLIQUE FANTASMA) */
+/* PUZZLE 18 — O ENIGMA DA JANELA ENCOLHIDA (ARRASTAR PRO LADO) */
 // ==========================================================================
 window.setupPuzzle18 = function() {
-    digitar(txtEntidade, "A saída está bem diante dos seus olhos, camuflada na escuridão absoluta. Confie no tato do seu cursor para encontrar o ponto invisível.");
+    digitar(txtEntidade, "O espaço se tornou pequeno demais para a minha presença. Se quiser enxergar além das bordas que eu mesmo criei, você terá que expandir os limites desta interface e me puxar de volta.");
     
-    const btnInvisivel = document.createElement('button');
-    btnInvisivel.className = 'btn-target'; btnInvisivel.textContent = 'AVANÇAR SISTEMA';
-    btnInvisivel.style.opacity = '0'; btnInvisivel.style.cursor = 'pointer';
-    btnInvisivel.style.padding = '20px 40px'; btnInvisivel.style.transition = 'none';
+    // Altera o estilo da zona de interação para criar o transbordo (scroll horizontal)
+    zonaInteracao.style.overflowX = 'scroll';
+    zonaInteracao.style.overflowY = 'hidden';
+    zonaInteracao.style.whiteSpace = 'nowrap';
     
-    btnInvisivel.addEventListener('click', () => {
+    const containerLargo = document.createElement('div');
+    containerLargo.style.width = '180%'; // Empurra o conteúdo para fora da tela
+    containerLargo.style.display = 'flex';
+    containerLargo.style.justifyContent = 'flex-end'; // Joga o botão lá para a extrema direita
+    containerLargo.style.paddingRight = '50px';
+    containerLargo.style.height = '100%';
+    containerLargo.style.alignItems = 'center';
+    
+    const btnOculto = document.createElement('button');
+    btnOculto.className = 'btn-target';
+    btnOculto.textContent = 'FINALIZAR SISTEMA';
+    
+    btnOculto.addEventListener('click', () => {
+        // Restaura a zona de interação ao padrão antes de avançar
+        zonaInteracao.style.overflowX = 'hidden';
+        zonaInteracao.style.whiteSpace = 'normal';
         AudioEngine.play(650, 0.15, 'sine', 0.04);
         proximoPuzzle();
     });
     
-    zonaInteracao.appendChild(btnInvisivel);
+    containerLargo.appendChild(btnOculto);
+    zonaInteracao.appendChild(containerLargo);
 };
 
 // ==========================================================================
